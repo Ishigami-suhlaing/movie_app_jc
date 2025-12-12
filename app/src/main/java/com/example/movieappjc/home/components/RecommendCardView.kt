@@ -43,10 +43,10 @@ fun RecommendCardView(
                 modifier = Modifier.fillMaxSize())
 
             IconButton(
-                onClick = { /* handle play click */ },
+                onClick = {},
                 modifier = Modifier
-                    .align(Alignment.Center) // center the button on top of the image
-                    .size(56.dp) // size of the play button
+                    .align(Alignment.Center)
+                    .size(56.dp) 
                     .background(Color.White.copy(alpha = 0.5f), shape = CircleShape)
             ) {
                 Icon(
