@@ -9,10 +9,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.example.movieappjc.home.BottomNavBar
-import com.example.movieappjc.home.Greeting
+import com.example.movieappjc.home.components.BottomNavBar
 import com.example.movieappjc.home.HomeScreen2
-import com.example.movieappjc.navi.AppNavHost
 import com.example.movieappjc.ui.theme.MovieAppJCTheme
 
 class MainActivity : ComponentActivity() {
