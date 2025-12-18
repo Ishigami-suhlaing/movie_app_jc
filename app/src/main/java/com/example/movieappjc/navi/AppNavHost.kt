@@ -8,7 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.movieappjc.home.HomeScreen
-import com.example.movieappjc.LoginScreen
 
 @Composable
 fun AppNavHost(
@@ -20,9 +19,6 @@ fun AppNavHost(
         navController = navController,
         startDestination = "login"
     ) {
-        composable("login") {
-            LoginScreen(navController = navController)
-        }
 
         composable("home") {
             HomeScreen()
