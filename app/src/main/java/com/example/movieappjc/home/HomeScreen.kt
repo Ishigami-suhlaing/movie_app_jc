@@ -1,5 +1,6 @@
 package com.example.movieappjc.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,18 +11,26 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.movieappjc.R
+import com.example.movieappjc.api.NetworkClient
+import com.example.movieappjc.api.PopularApiMovieData
+import com.example.movieappjc.api.UpComingApiMovieData
 import com.example.movieappjc.home.components.Greeting
 import com.example.movieappjc.home.components.Menu
-import com.example.movieappjc.home.components.NewCard
-import com.example.movieappjc.home.components.RecommendCard
+import com.example.movieappjc.home.components.PopularCard
+import com.example.movieappjc.home.components.UpComingCard
 import com.example.movieappjc.home.components.SearchBar
 import com.example.movieappjc.model.NewMovieData
 import com.example.movieappjc.model.RecommendMovieData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 private val recommendMovieData = listOf<RecommendMovieData>(
@@ -46,6 +55,35 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ){
     val scrollState = rememberScrollState()
+    val popularMovies = remember { mutableStateListOf<PopularApiMovieData>() }
+    val upComingMovies = remember { mutableStateListOf<UpComingApiMovieData>() }
+
+    LaunchedEffect(Unit){
+        withContext(Dispatchers.IO){
+            try{
+                popularMovies.clear()
+                val popularMovieResponse = NetworkClient().fetchPopularMovies()
+
+                upComingMovies.clear()
+                val upComingMovieResponse = NetworkClient().fetchUpComingMovies()
+
+                popularMovies.addAll(popularMovieResponse.results.map {
+                    PopularApiMovieData(it.title,it.description,it.posterPath)
+                })
+
+                upComingMovies.addAll(upComingMovieResponse.results.map {
+                    UpComingApiMovieData(it.title, it.description, it.posterPath)
+                })
+
+
+                Log.d("API_DEBUG", "Movies count: ${popularMovieResponse.results.size}")
+
+
+            }catch (e: Exception){
+                Log.e("API_DEBUG", "API failed", e)
+            }
+        }
+    }
 
     Column(
 
@@ -63,11 +101,11 @@ fun HomeScreen(
         Text(text = "Ongoing Series", fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
         Spacer(modifier = Modifier.height(8.dp))
 
-        RecommendCard(recommendMovieData)
+        UpComingCard(upComingMovies)
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = "Christmas Choices", fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
         Spacer(modifier = Modifier.height(8.dp))
-        NewCard(newMovieData)
+        PopularCard(popularMovies)
 
     }
 }

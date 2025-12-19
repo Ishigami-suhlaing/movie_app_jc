@@ -9,9 +9,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
-import io.ktor.http.ContentType.Application.Json
 import io.ktor.http.HttpHeaders
-import io.ktor.http.parameters
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
@@ -34,7 +32,7 @@ class NetworkClient {
     }
 
 
-    suspend fun fetchPopularMovies(): MovieResponse{
+    suspend fun fetchPopularMovies(): PopularMovieResponse{
         val response: HttpResponse = client.get("https://api.themoviedb.org/3/movie/popular?language=en-US&page=1"){
             parameter("language","en-US")
             parameter("page",1)
@@ -44,5 +42,20 @@ class NetworkClient {
         }
         return response.body()
     }
+
+    suspend fun fetchUpComingMovies(): PopularMovieResponse{
+        val response: HttpResponse = client.get("https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1"){
+            parameter("language","en-US")
+            parameter("page",1)
+            header(HttpHeaders.Accept,"application/json")
+
+            header(HttpHeaders.Authorization,"Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MzM3MTZkN2MyYTUyYzE4MzcwMjgwZjZjZDgwOWZkYyIsIm5iZiI6MTc2NTcxNzk3MC4wMzUsInN1YiI6IjY5M2ViN2QyYTA2MTg5OTE4MmY3ODdmNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.aeTXrzoPFOlnovQD3pHzWjlGN0X0cqAAdjeepvccsIc")
+        }
+        return response.body()
+    }
+
+
+
+
 
 }

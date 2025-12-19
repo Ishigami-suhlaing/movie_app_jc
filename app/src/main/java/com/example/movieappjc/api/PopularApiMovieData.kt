@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class ApiMovieData(
+data class PopularApiMovieData(
     val title: String,
     @SerialName("overview") val description: String,
     @SerialName("poster_path") val posterPath: String?

@@ -1,5 +1,6 @@
 package com.example.movieappjc.home.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,13 +24,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import coil3.compose.rememberAsyncImagePainter
+import com.example.movieappjc.api.UpComingApiMovieData
 import com.example.movieappjc.model.RecommendMovieData
 
 @Composable
-fun RecommendCardView(
-    recommendMovieData: RecommendMovieData,
+fun UpComingCardView(
+    upComingMovieData: UpComingApiMovieData,
     modifier: Modifier = Modifier
 ) {
+
+
     Column(
         modifier.padding(horizontal = 8.dp),
         verticalArrangement = Arrangement.Center,
@@ -37,16 +43,41 @@ fun RecommendCardView(
     ) {
         Box(modifier = Modifier.size(250.dp, 150.dp)
             .clip(RoundedCornerShape(12.dp))){
-            Image(painter = painterResource(recommendMovieData.poster),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize())
+//            Image(painter = painterResource(upComingMovieData.posterPath.toInt()),
+//                contentDescription = null,
+//                contentScale = ContentScale.Crop,
+//                modifier = Modifier.fillMaxSize())
+
+            val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
+            val fullPosterUrl = IMAGE_BASE_URL + upComingMovieData.posterPath
+
+
+//            if(upComingMovieData.posterPath!!.isNotEmpty()){
+//                Image(painter = rememberAsyncImagePainter(model = fullPosterUrl),
+//                    contentDescription = null,
+//                    contentScale = ContentScale.Crop,
+//                    modifier = Modifier.fillMaxSize())
+//                Log.d("PosterURL", fullPosterUrl)
+//
+//            }
+
+            AsyncImage(
+                model = fullPosterUrl,
+                contentDescription = upComingMovieData.title,
+                onError = {
+                    Log.e("ImageError", it.result.throwable.message ?: "Unknown error")
+                },
+                onSuccess = {
+                    Log.d("ImageSuccess", "Loaded successfully")
+                }
+            )
+
 
             IconButton(
                 onClick = {},
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .size(56.dp) 
+                    .size(56.dp)
                     .background(Color.White.copy(alpha = 0.5f), shape = CircleShape)
             ) {
                 Icon(
@@ -57,7 +88,7 @@ fun RecommendCardView(
                 )
             }
         }
-        Text(text = recommendMovieData.title)
+        Text(text = upComingMovieData.title)
         Rating()
 
     }

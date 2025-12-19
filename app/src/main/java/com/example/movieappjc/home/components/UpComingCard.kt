@@ -1,18 +1,17 @@
 package com.example.movieappjc.home.components
 
 import androidx.compose.runtime.Composable
-import com.example.movieappjc.model.RecommendMovieData
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import com.example.movieappjc.model.NewMovieData
+import com.example.movieappjc.api.UpComingApiMovieData
 
 @Composable
-fun NewCard(newMovieItems: List<NewMovieData>){
+fun UpComingCard(recommendMovieItems: List<UpComingApiMovieData>){
     LazyRow() {
         items(
-            newMovieItems
+            recommendMovieItems
         ){
-            NewCardView(it)
+            UpComingCardView(it)
         }
     }
 

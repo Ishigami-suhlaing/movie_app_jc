@@ -2,11 +2,9 @@ package com.example.movieappjc.api
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
@@ -18,7 +16,7 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun ApiTestPage(modifier: Modifier = Modifier) {
-    val popularMovies = remember { mutableStateListOf<ApiMovieData>() }
+    val popularMovies = remember { mutableStateListOf<PopularApiMovieData>() }
 
     LaunchedEffect(Unit){
         withContext(Dispatchers.IO){
@@ -28,7 +26,7 @@ fun ApiTestPage(modifier: Modifier = Modifier) {
                 popularMovies.clear()
 
                 popularMovies.addAll(movieResponse.results.map {
-                    ApiMovieData(it.title,it.description,it.posterPath)
+                    PopularApiMovieData(it.title,it.description,it.posterPath)
                 })
 
 

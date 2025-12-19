@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun ApiCardTestPageView(
-    movieData: ApiMovieData,
+    movieData: PopularApiMovieData,
 
     ) {
     Column(
