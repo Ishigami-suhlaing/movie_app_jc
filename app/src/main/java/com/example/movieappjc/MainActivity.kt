@@ -9,8 +9,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.example.movieappjc.api.ApiCardTestPageView
-import com.example.movieappjc.api.ApiTestPage
+
 import com.example.movieappjc.home.components.BottomNavBar
 import com.example.movieappjc.home.HomeScreen
 import com.example.movieappjc.ui.theme.MovieAppJCTheme
@@ -22,6 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MovieAppJCTheme {
                 Scaffold(
+                    bottomBar = { BottomNavBar(modifier = Modifier.navigationBarsPadding()) },
 
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->

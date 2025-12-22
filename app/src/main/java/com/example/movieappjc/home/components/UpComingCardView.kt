@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -21,17 +20,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import coil3.compose.rememberAsyncImagePainter
+import com.example.movieappjc.R
 import com.example.movieappjc.api.UpComingApiMovieData
-import com.example.movieappjc.model.RecommendMovieData
+import com.example.movieappjc.model.UpComingMovieFixedData
 
 @Composable
 fun UpComingCardView(
-    upComingMovieData: UpComingApiMovieData,
+    upComingMovieData: UpComingMovieFixedData,
     modifier: Modifier = Modifier
 ) {
 
@@ -41,36 +39,28 @@ fun UpComingCardView(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Box(modifier = Modifier.size(250.dp, 150.dp)
             .clip(RoundedCornerShape(12.dp))){
-//            Image(painter = painterResource(upComingMovieData.posterPath.toInt()),
-//                contentDescription = null,
-//                contentScale = ContentScale.Crop,
-//                modifier = Modifier.fillMaxSize())
-
-            val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
-            val fullPosterUrl = IMAGE_BASE_URL + upComingMovieData.posterPath
 
 
-//            if(upComingMovieData.posterPath!!.isNotEmpty()){
-//                Image(painter = rememberAsyncImagePainter(model = fullPosterUrl),
-//                    contentDescription = null,
-//                    contentScale = ContentScale.Crop,
-//                    modifier = Modifier.fillMaxSize())
-//                Log.d("PosterURL", fullPosterUrl)
+//            val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
+//            val fullPosterUrl = IMAGE_BASE_URL + upComingMovieData.poster
 //
-//            }
-
-            AsyncImage(
-                model = fullPosterUrl,
-                contentDescription = upComingMovieData.title,
-                onError = {
-                    Log.e("ImageError", it.result.throwable.message ?: "Unknown error")
-                },
-                onSuccess = {
-                    Log.d("ImageSuccess", "Loaded successfully")
-                }
-            )
+//
+//
+//
+//            AsyncImage(
+//                model = fullPosterUrl,
+//                contentDescription = upComingMovieData.title,
+//                onError = {
+//                    Log.e("ImageError", it.result.throwable.message ?: "Unknown error")
+//                },
+//                onSuccess = {
+//                    Log.d("ImageSuccess", "Loaded successfully")
+//                }
+//            )
+            Image(painter = painterResource(upComingMovieData.poster), contentDescription = null)
 
 
             IconButton(
@@ -79,7 +69,7 @@ fun UpComingCardView(
                     .align(Alignment.Center)
                     .size(56.dp)
                     .background(Color.White.copy(alpha = 0.5f), shape = CircleShape)
-            ) {
+            )     {
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = "Play",

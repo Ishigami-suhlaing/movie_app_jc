@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class UpComingApiMovieData(
     val title: String,
     @SerialName("overview") val description: String,
-    @SerialName("poster_path") val posterPath: String?
+    @SerialName("backdrop_path") val posterPath: String?
 )

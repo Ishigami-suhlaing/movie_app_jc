@@ -1,6 +1,7 @@
 package com.example.movieappjc.home
 
 import android.util.Log
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,35 +9,34 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
+import androidx.compose.material3.CircularProgressIndicator
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.movieappjc.R
 import com.example.movieappjc.api.NetworkClient
 import com.example.movieappjc.api.PopularApiMovieData
-import com.example.movieappjc.api.UpComingApiMovieData
 import com.example.movieappjc.home.components.Greeting
 import com.example.movieappjc.home.components.Menu
 import com.example.movieappjc.home.components.PopularCard
 import com.example.movieappjc.home.components.UpComingCard
 import com.example.movieappjc.home.components.SearchBar
 import com.example.movieappjc.model.NewMovieData
-import com.example.movieappjc.model.RecommendMovieData
+import com.example.movieappjc.model.UpComingMovieFixedData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-private val recommendMovieData = listOf<RecommendMovieData>(
-    RecommendMovieData("Attack on Titan", "Description 1", R.drawable.attack_on_titan),
-    RecommendMovieData("Suzume", "Description 2", R.drawable.suzume),
-    RecommendMovieData("Akatsuki", "Description 3", R.drawable.naruto)
+private val upComingMovieFixedData = listOf<UpComingMovieFixedData>(
+    UpComingMovieFixedData("Attack on Titan", "Description 1", R.drawable.attack_on_titan),
+    UpComingMovieFixedData("Suzume", "Description 2", R.drawable.suzume),
+    UpComingMovieFixedData("Akatsuki", "Description 3", R.drawable.naruto)
 )
 
 private val newMovieData = listOf<NewMovieData>(
@@ -56,28 +56,30 @@ fun HomeScreen(
 ){
     val scrollState = rememberScrollState()
     val popularMovies = remember { mutableStateListOf<PopularApiMovieData>() }
-    val upComingMovies = remember { mutableStateListOf<UpComingApiMovieData>() }
+//    val upComingMovies = remember { mutableStateListOf<UpComingApiMovieData>() }
+    val upComingMovies = upComingMovieFixedData
+    val isLoading = remember{ mutableStateOf(true) }
 
     LaunchedEffect(Unit){
         withContext(Dispatchers.IO){
             try{
+                isLoading.value = true
                 popularMovies.clear()
                 val popularMovieResponse = NetworkClient().fetchPopularMovies()
 
-                upComingMovies.clear()
-                val upComingMovieResponse = NetworkClient().fetchUpComingMovies()
+//                upComingMovies.clear()
+//                val upComingMovieResponse = NetworkClient().fetchUpComingMovies()
 
                 popularMovies.addAll(popularMovieResponse.results.map {
                     PopularApiMovieData(it.title,it.description,it.posterPath)
                 })
 
-                upComingMovies.addAll(upComingMovieResponse.results.map {
-                    UpComingApiMovieData(it.title, it.description, it.posterPath)
-                })
+//                upComingMovies.addAll(upComingMovieResponse.results.map {
+//                    UpComingApiMovieData(it.title, it.description, it.posterPath)
+//                })
 
 
-                Log.d("API_DEBUG", "Movies count: ${popularMovieResponse.results.size}")
-
+                isLoading.value = false
 
             }catch (e: Exception){
                 Log.e("API_DEBUG", "API failed", e)
@@ -85,27 +87,34 @@ fun HomeScreen(
         }
     }
 
-    Column(
 
-        modifier = modifier.fillMaxSize().padding(vertical = 8.dp, horizontal = 8.dp).verticalScroll(scrollState)
-    ) {
+    if(isLoading.value){
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+            CircularProgressIndicator()
+        }
+    }else{
+        Column(
 
-        Greeting(modifier = Modifier)
-        Spacer(modifier = Modifier.height(8.dp))
+            modifier = modifier.fillMaxSize().padding(vertical = 8.dp, horizontal = 8.dp).verticalScroll(scrollState)
+        ) {
 
-        SearchBar(modifier = Modifier)
-        Spacer(modifier = Modifier.height(8.dp))
+            Greeting(modifier = Modifier)
+            Spacer(modifier = Modifier.height(8.dp))
 
-        Menu(modifier = Modifier)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Ongoing Series", fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
-        Spacer(modifier = Modifier.height(8.dp))
+            SearchBar(modifier = Modifier)
+            Spacer(modifier = Modifier.height(8.dp))
 
-        UpComingCard(upComingMovies)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Christmas Choices", fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
-        Spacer(modifier = Modifier.height(8.dp))
-        PopularCard(popularMovies)
+            Menu(modifier = Modifier)
+            Spacer(modifier = Modifier.height(8.dp))
 
+            UpComingCard(upComingMovies)
+            Spacer(modifier = Modifier.height(8.dp))
+
+            PopularCard(popularMovies)
+
+        }
     }
+
+
+
 }
