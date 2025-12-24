@@ -10,18 +10,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.movieappjc.api.PopularApiMovieData
 import com.example.movieappjc.model.NewMovieData
 
 @Composable
-fun PopularCard(popularMovieItems: List<PopularApiMovieData>){
+fun PopularCard(popularMovieItems: List<PopularApiMovieData>, navController: NavController){
     Text(text = "Christmas Choices", fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
     Spacer(modifier = Modifier.height(8.dp))
     LazyRow() {
         items(
             popularMovieItems
         ){
-            PopularCardView(it)
+            PopularCardView(it, navController = navController)
         }
     }
 

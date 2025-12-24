@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 
 import com.example.movieappjc.home.components.BottomNavBar
 import com.example.movieappjc.home.HomeScreen
+import com.example.movieappjc.navi.AppNavHost
 import com.example.movieappjc.ui.theme.MovieAppJCTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,8 +27,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
 
-                    HomeScreen(modifier = Modifier.padding(innerPadding))
-                }
+                    AppNavHost(
+                        modifier = Modifier.padding(innerPadding)
+                    )                }
             }
         }
     }

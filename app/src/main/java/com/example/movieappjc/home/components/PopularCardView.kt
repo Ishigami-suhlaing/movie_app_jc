@@ -2,6 +2,7 @@ package com.example.movieappjc.home.components
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,14 +19,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
+import com.example.movieappjc.api.MovieMemoryStore
 import com.example.movieappjc.api.PopularApiMovieData
 import com.example.movieappjc.model.NewMovieData
 
 @Composable
 fun PopularCardView(
     popularMovieData: PopularApiMovieData,
+    navController: NavController
 
     ){
     val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
@@ -33,6 +37,10 @@ fun PopularCardView(
 
 
     Box(modifier = Modifier.size(150.dp, 250.dp).padding(8.dp)
+        .clickable {
+            MovieMemoryStore.selectedMovie = popularMovieData
+            navController.navigate("movie_detail")
+        }
         .clip(RoundedCornerShape(12.dp))){
 
         AsyncImage(
@@ -45,5 +53,5 @@ fun PopularCardView(
                 Log.d("ImageSuccess", "Loaded successfully")
             }
         )
-        }
+    }
 }
