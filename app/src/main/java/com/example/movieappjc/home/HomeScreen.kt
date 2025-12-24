@@ -100,6 +100,8 @@ fun HomeScreen(
 
             modifier = modifier.fillMaxSize().padding(vertical = 8.dp, horizontal = 8.dp).verticalScroll(scrollState)
         ) {
+            Spacer(modifier = Modifier.height(8.dp))
+
 
             Greeting(modifier = Modifier)
             Spacer(modifier = Modifier.height(8.dp))
